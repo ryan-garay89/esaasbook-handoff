@@ -52,6 +52,32 @@ document.getElementById("deserialize").addEventListener('click', function () {
     hltr.deserializeHighlights(serialized);
 });
 
+var myFormatter = function(annotation) {
+    console.log(annotation.id);
+    return "myCustomHighlight";
+  }
+
+
+var reco = Recogito.init({
+    content: 'main-content', 
+    locale: 'auto',
+    formatter: myFormatter,
+    allowEmpty: true,
+    widgets: [
+    { widget: 'COMMENT' },
+    { widget: 'TAG', vocabulary: [ 'Place', 'Person', 'Event', 'Organization', 'Animal' ] }
+    ],
+    relationVocabulary: [ 'isRelated', 'isPartOf', 'isSameAs ']
+});
+
+reco.on('selectAnnotation', function(a) {
+    console.log('I made a selection!');
+});
+
+reco.on('createAnnotation', function(a) {
+    console.log('I created an annotation!');
+});
+
 /*
 (function () {
     var removeBtn = document.getElementById('remove'),

@@ -1,1 +1,4 @@
-/* This file intentionally left blank. */
+.myCustomHighlight {
+    background-color: lime !important;
+    color: red;
+}
