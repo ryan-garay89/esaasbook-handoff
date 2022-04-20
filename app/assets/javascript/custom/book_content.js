@@ -1,7 +1,8 @@
 // book_content.js
-// By Joshua Delrosario
-// Checks what chapter/section we are on and highlights the corresponding menu item
+// Scripts for this project
 
+
+// Checks what chapter/section we are on and highlights the corresponding menu item
 $(document).ready(function() {
     let my_loc = window.location.href;
     let chapter_pattern = /chapter\/(\d+)/;
@@ -25,4 +26,79 @@ $(document).ready(function() {
         $("#p0").addClass("current");
         $("#p0").addClass("active");
     }
+});
+
+
+
+var hltr = new TextHighlighter(document.getElementById('sandbox'));
+
+function myHighlightHandler() {
+    hltr.doHighlight();
+}
+
+function bindHighlighter() {
+    $("#sandbox").on("mouseup", myHighlightHandler);
+}
+
+function unbindHighlighter() {
+    $("#sandbox").off("mouseup", myHighlightHandler);
+}
+
+function activateHighlighter(color) {
+    hltr.setColor(color);
+    hltr.doHighlight();
+}
+
+function activateHighlighterHandler(color) {
+
+}
+
+$("#red_btn").on("click", event => {activateHighlighter("red") });
+$("#yellow_btn").on("click", event => {activateHighlighter("yellow") });
+$("#green_btn").on("click", event => {activateHighlighter("green") });
+$("#white_btn").on("click", event => {activateHighlighter("white") });
+$('#red_btn').mousedown(function() {return false;});
+$("#yellow_btn").mousedown(function() {return false;});
+$('#green_btn').mousedown(function() {return false;});
+$('#white_btn').mousedown(function() {return false;});
+
+document.getElementById("remove").addEventListener('click', function () {
+    hltr.removeHighlights();
+});
+
+document.getElementById("serialize").addEventListener('click', function () {
+    serialized = hltr.serializeHighlights();
+    console.log(serialized);
+    hltr.removeHighlights();
+});
+
+document.getElementById("deserialize").addEventListener('click', function () {
+    hltr.removeHighlights();
+    hltr.deserializeHighlights(serialized);
+});
+
+var myFormatter = function(annotation) {
+    console.log(annotation.id);
+    return "myCustomHighlight";
+  }
+
+
+var reco = Recogito.init({
+    content: 'main-content', 
+    locale: 'auto',
+    formatter: myFormatter,
+    allowEmpty: true,
+    widgets: [
+    { widget: 'COMMENT' },
+    { widget: 'TAG', vocabulary: [ 'Place', 'Person', 'Event', 'Organization', 'Animal' ] }
+    ],
+    relationVocabulary: [ 'isRelated', 'isPartOf', 'isSameAs ']
+});
+
+reco.on('selectAnnotation', function(a) {
+    console.log('I made a selection!');
+});
+
+reco.on('createAnnotation', function(a) {
+    console.log('I created an annotation!');
 });
